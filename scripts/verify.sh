@@ -90,6 +90,14 @@ log_code="$(curl -s -o /dev/null -w '%{http_code}' "$API_BASE/api/v1/logs/collec
 echo "/api/v1/logs/collect: $log_code"
 [[ "$log_code" == "200" ]] || fail "logs endpoint returned $log_code"
 
+echo ""
+echo "=== Production smoke ($WEB_BASE via nginx) ==="
+curl -sf "$WEB_BASE/" >/dev/null || fail "dashboard root unreachable"
+prod_code="$(curl -s -o /dev/null -w '%{http_code}' "$WEB_BASE/api/v1/sensors/status")"
+echo "/api/v1/sensors/status (proxied): $prod_code"
+[[ "$prod_code" == "200" ]] || fail "proxied API returned $prod_code"
+curl -sf "$WEB_BASE/docs" >/dev/null || fail "proxied /docs unreachable"
+
 if [[ "$RUN_PHP_PARITY" == "1" ]]; then
   echo ""
   echo "=== PHP parity ==="

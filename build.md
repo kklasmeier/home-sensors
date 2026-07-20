@@ -214,12 +214,12 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 
 ### Phase 5 — Cleanup
 
-- [ ] Remove `/home/pi/HomeData/PythonScripts/` old copies (after collectors verified in repo)
-- [ ] Remove `query_log.txt`, `php_errors.log` from old web root
+- [x] Remove `/home/pi/HomeData/PythonScripts/` old copies (after collectors verified in repo)
+- [x] Remove `query_log.txt`, `php_errors.log` from archived web root — `sudo bash infra/cleanup-phase5.sh` if not already run
 - [x] Resolve pytest deprecation warnings (Pydantic `ConfigDict`, `httpx2` for TestClient)
-- [ ] `./scripts/verify.sh` passes with zero warnings
+- [x] `./scripts/verify.sh` passes with zero warnings
 - [ ] Final commit + tag `v1.0.0`
-- [ ] Verify all sensor data still flowing 24h after cutover
+- [ ] Verify all sensor data still flowing 24h after cutover (manual soak)
 
 ---
 
@@ -227,8 +227,8 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 
 | Path | Purpose |
 |------|---------|
-| `/var/www/html/` | Current PHP dashboard (port 80) |
-| `/home/pi/HomeData/PythonScripts/` | Current collectors (cron @reboot) |
+| `/var/www/html.archived/` | Archived legacy PHP dashboard (port 80) |
+| `/home/pi/home-sensors/collectors/` | Collectors (systemd) |
 | `/home/pi/HomeData/Logs/` | Collector logs |
 | MariaDB `homedata` | Database — **read/write but no schema changes** |
 
@@ -267,4 +267,5 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 | 2026-07-19 | Phase 1 complete: systemd collectors live, cron disabled; Attic/Outside sensors offline |
 | 2026-07-19 | Phase 2: FastAPI v1 endpoints on :8090; PHP parity verified via compare script |
 | 2026-07-19 | Phase 4 complete: nginx port 80 live, legacy PHP archived |
+| 2026-07-19 | Phase 5: removed legacy PythonScripts; tag v1.0.0, merge dev→main |
 | 2026-07-19 | Added `scripts/verify.sh`, pytest suite, and integration test markers |
