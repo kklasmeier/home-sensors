@@ -215,10 +215,10 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 ### Phase 5 — Cleanup
 
 - [x] Remove `/home/pi/HomeData/PythonScripts/` old copies (after collectors verified in repo)
-- [x] Remove `query_log.txt`, `php_errors.log` from archived web root — `sudo bash infra/cleanup-phase5.sh` if not already run
+- [x] Remove `query_log.txt`, `php_errors.log` from archived web root — `sudo bash infra/cleanup-phase5.sh` if files remain
 - [x] Resolve pytest deprecation warnings (Pydantic `ConfigDict`, `httpx2` for TestClient)
 - [x] `./scripts/verify.sh` passes with zero warnings
-- [ ] Final commit + tag `v1.0.0`
+- [x] Final commit + tag `v1.0.0`
 - [ ] Verify all sensor data still flowing 24h after cutover (manual soak)
 
 ---
