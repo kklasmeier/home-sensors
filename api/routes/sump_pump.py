@@ -26,7 +26,14 @@ ORDER BY reading_dttm
 """
 
 
-@router.get("/charts")
+@router.get(
+    "/charts",
+    summary="Sump pump water level trend",
+    description=(
+        "Returns 2-minute averaged water level readings for roughly the last 100 hours. "
+        "Used for the sump pump line chart on the dashboard."
+    ),
+)
 def sump_pump_charts():
     with get_connection() as conn:
         cursor = conn.cursor(dictionary=True)
@@ -36,7 +43,13 @@ def sump_pump_charts():
     return [php_json_row(row) for row in rows]
 
 
-@router.get("/cycles")
+@router.get(
+    "/cycles",
+    summary="Daily sump pump cycle counts",
+    description=(
+        "Calls stored procedure `CountRapidFalls` and returns the number of pump cycles per day."
+    ),
+)
 def sump_pump_cycles():
     with get_connection() as conn:
         cursor = conn.cursor(dictionary=True)

@@ -19,7 +19,13 @@ def _serialize_row(row: dict) -> dict:
     return result
 
 
-@router.get("/cycles")
+@router.get(
+    "/cycles",
+    summary="Daily HVAC cycle counts",
+    description=(
+        "Calls stored procedure `FindCyclesByDate` and returns HVAC cycle counts grouped by date."
+    ),
+)
 def hvac_cycles():
     with get_connection() as conn:
         cursor = conn.cursor(dictionary=True)

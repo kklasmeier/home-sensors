@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.config import settings
 from api.database import check_database_connection
+from api.openapi_meta import API_DESCRIPTION, OPENAPI_TAGS
 from api.routes import garage, hvac, logs, sensors, sump_pump
 
 logging.basicConfig(
@@ -28,9 +29,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Home Sensors API",
-    description="REST API for the Home Sensor Dashboard",
+    description=API_DESCRIPTION,
     version="1.0.0",
     lifespan=lifespan,
+    openapi_tags=OPENAPI_TAGS,
 )
 
 app.add_middleware(
@@ -47,7 +49,11 @@ app.include_router(hvac.router, prefix="/api/v1")
 app.include_router(logs.router, prefix="/api/v1")
 
 
-@app.get("/")
+@app.get(
+    "/",
+    summary="API index",
+    description="Returns API name, version, and links to interactive documentation.",
+)
 def root():
     return {
         "message": "Home Sensors API",

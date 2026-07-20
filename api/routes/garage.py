@@ -47,7 +47,14 @@ def _calculate_duration(conn, column: str) -> str:
     return f"{hours} hours, {minutes} minutes"
 
 
-@router.get("/status")
+@router.get(
+    "/status",
+    summary="Current garage door state",
+    description=(
+        "Returns UP/DOWN status, UI image filename, and how long each door has been "
+        "in the current state for Main Garage Door and 3rd Car Door."
+    ),
+)
 def garage_status():
     doors = []
     with get_connection() as conn:
@@ -74,7 +81,14 @@ def garage_status():
     return {"doors": doors}
 
 
-@router.get("/charts")
+@router.get(
+    "/charts",
+    summary="24-hour garage door history",
+    description=(
+        "Returns door state over the last 24 hours. `mainGarageDoor` and `thirdCarDoor` "
+        "are `1` when UP (open) and `0` when DOWN (closed)."
+    ),
+)
 def garage_charts():
     sql = """
     SELECT reading_dttm, 2Door AS mainGarageDoor, 1Door AS thirdCarDoor

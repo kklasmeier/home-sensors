@@ -84,7 +84,15 @@ def _summary_sql(interval: str, sensor: str, location: str) -> str:
     )
 
 
-@router.get("/status")
+@router.get(
+    "/status",
+    summary="Sensor freshness by source",
+    description=(
+        "Returns seconds since the last reading and a color status for each data source: "
+        "environment locations (Attic, Garage, Inside, Outside, HVAC), Garagedoor, and SumpPump. "
+        "Green if ≤180s, Yellow if ≤600s, Red if older."
+    ),
+)
 def sensor_status():
     with get_connection() as conn:
         cursor = conn.cursor(dictionary=True)
@@ -105,7 +113,14 @@ def sensor_status():
     return result
 
 
-@router.get("/current")
+@router.get(
+    "/current",
+    summary="Latest environment reading per location",
+    description=(
+        "Returns the most recent temperature (°F), heat index (°F), humidity (%), and pressure (inHg) "
+        "for each environment location. Value is `null` when no reading exists."
+    ),
+)
 def current_readings():
     readings: dict[str, dict | None] = {}
     with get_connection() as conn:
@@ -127,7 +142,15 @@ def current_readings():
     return readings
 
 
-@router.get("/{location}/charts")
+@router.get(
+    "/{location}/charts",
+    summary="24-hour chart series for one location",
+    description=(
+        "Returns 2-minute averaged readings for the last 24 hours at the given location. "
+        "Used to plot temperature, heat index, humidity, and pressure over time. "
+        "Valid locations: Attic, Garage, Inside, Outside, HVAC."
+    ),
+)
 def location_charts(location: str):
     if location not in LOCATIONS:
         raise HTTPException(status_code=404, detail="Unknown location")
@@ -140,7 +163,15 @@ def location_charts(location: str):
     return php_json_rows(rows)
 
 
-@router.get("/{location}/summary")
+@router.get(
+    "/{location}/summary",
+    summary="High and low values by time range",
+    description=(
+        "Returns high/low strings (`max / min`) for each sensor and interval: "
+        "HOUR, DAY, WEEK, MONTH, YEAR. HOUR uses raw readings; longer intervals use "
+        "`sensor_readings_summary` rollups. Returns `N/A` when no data exists."
+    ),
+)
 def location_summary(location: str):
     if location not in LOCATIONS:
         raise HTTPException(status_code=404, detail="Unknown location")
