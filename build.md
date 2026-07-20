@@ -216,6 +216,8 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 
 - [ ] Remove `/home/pi/HomeData/PythonScripts/` old copies (after collectors verified in repo)
 - [ ] Remove `query_log.txt`, `php_errors.log` from old web root
+- [x] Resolve pytest deprecation warnings (Pydantic `ConfigDict`, `httpx2` for TestClient)
+- [ ] `./scripts/verify.sh` passes with zero warnings
 - [ ] Final commit + tag `v1.0.0`
 - [ ] Verify all sensor data still flowing 24h after cutover
 
