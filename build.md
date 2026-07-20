@@ -121,6 +121,12 @@ mountpoint /home/pi/Programming/home-sensors
    ```
 4. Frontend dev server runs on pi5Desktop, API pointed at `192.168.1.26:8090`
 5. Production build: `npm run build` → nginx serves `web/dist/`
+6. Verify after each phase (on PiSensors):
+   ```bash
+   ./scripts/verify.sh              # full: systemd + smoke + PHP parity + pytest
+   ./scripts/verify.sh --smoke      # skip PHP parity (use after Phase 4 cutover)
+   RUN_INTEGRATION=1 ./scripts/verify.sh  # include live API integration tests
+   ```
 
 ---
 
@@ -264,3 +270,4 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 | 2026-07-19 | Phase 1 complete: systemd collectors live, cron disabled; Attic/Outside sensors offline |
 | 2026-07-19 | Phase 2: FastAPI v1 endpoints on :8090; PHP parity verified via compare script |
 | 2026-07-19 | Phase 2 complete: `home-sensors-api` systemd service active on :8090 |
+| 2026-07-19 | Added `scripts/verify.sh`, pytest suite, and integration test markers |
