@@ -184,7 +184,7 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 - [x] Shared DB connection module (reads `.env`)
 - [x] Implement all v1 endpoints (see API contract above)
 - [x] Side-by-side JSON comparison: new API vs old PHP
-- [ ] systemd service `home-sensors-api` on port `:8090` — run `infra/install-api.sh` on PiSensors
+- [x] systemd service `home-sensors-api` on port `:8090`
 - [x] `/docs` and `/redoc` verified
 - [x] All endpoints return matching data
 
@@ -263,3 +263,4 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 | 2026-07-19 | Phase 1: ported collectors, systemd units, `.env` on Pi; deploy pending sudo on PiSensors |
 | 2026-07-19 | Phase 1 complete: systemd collectors live, cron disabled; Attic/Outside sensors offline |
 | 2026-07-19 | Phase 2: FastAPI v1 endpoints on :8090; PHP parity verified via compare script |
+| 2026-07-19 | Phase 2 complete: `home-sensors-api` systemd service active on :8090 |
