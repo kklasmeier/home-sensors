@@ -25,19 +25,35 @@
 		type: 'line' | 'bar';
 	};
 
-	function makeConfig(params: ChartParams): ChartConfiguration {
+	/** Chart.js mutates config data; must not pass Svelte reactive proxies. */
+	function plainParams(params: ChartParams): ChartParams {
+		const snap = $state.snapshot(params);
 		return {
-			type: params.type,
+			title: snap.title,
+			type: snap.type,
+			labels: [...snap.labels],
+			datasets: snap.datasets.map((d) => ({
+				label: d.label,
+				borderColor: d.borderColor,
+				data: [...d.data]
+			}))
+		};
+	}
+
+	function makeConfig(params: ChartParams): ChartConfiguration {
+		const plain = plainParams(params);
+		return {
+			type: plain.type,
 			data: {
-				labels: params.labels,
-				datasets: params.datasets.map((d) => ({
+				labels: plain.labels,
+				datasets: plain.datasets.map((d) => ({
 					label: d.label,
 					data: d.data,
 					borderColor: d.borderColor,
-					backgroundColor: params.type === 'bar' ? `${d.borderColor}99` : 'transparent',
+					backgroundColor: plain.type === 'bar' ? `${d.borderColor}99` : 'transparent',
 					tension: 0.1,
 					spanGaps: true,
-					...(params.type === 'line' && d.label.includes('Door')
+					...(plain.type === 'line' && d.label.includes('Door')
 						? { stepped: 'before' as const }
 						: {})
 				}))
@@ -50,7 +66,7 @@
 					legend: { labels: { color: '#e0e0e0' } },
 					title: {
 						display: true,
-						text: params.title,
+						text: plain.title,
 						color: '#ffffff',
 						font: { size: 16 }
 					}
@@ -63,7 +79,7 @@
 					y: {
 						ticks: { color: '#9e9e9e' },
 						grid: { color: '#333' },
-						beginAtZero: params.type === 'bar'
+						beginAtZero: plain.type === 'bar'
 					}
 				}
 			}
@@ -84,15 +100,10 @@
 	}
 
 	const chartParams = $derived({ title, labels, datasets, type });
-	const hasData = $derived(datasets.some((d) => d.data.some((v) => v !== null)));
 </script>
 
 <div class="chart-panel" style="height: {height}px">
-	{#if hasData}
-		<canvas use:chartAction={chartParams}></canvas>
-	{:else}
-		<p class="empty">No data for this period</p>
-	{/if}
+	<canvas use:chartAction={chartParams}></canvas>
 </div>
 
 <style>
