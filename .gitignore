@@ -1,0 +1,37 @@
+# Secrets and local config
+.env
+*.env.local
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Node / SvelteKit
+node_modules/
+web/.svelte-kit/
+web/build/
+web/dist/
+
+# Logs and runtime artifacts
+*.log
+query_log.txt
+php_errors.log
+
+# Legacy backup folders (delete at end of project, never commit)
+bak*/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# NFS mount test marker
+.mount-test
