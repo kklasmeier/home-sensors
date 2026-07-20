@@ -206,11 +206,11 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 
 - [x] nginx config: port 80 serves `web/dist/` + proxies `/api/` to FastAPI
 - [x] FastAPI stays on `127.0.0.1:8090` behind nginx (`/api/`, `/docs`)
-- [ ] Full smoke test on http://192.168.1.26/ — **run `infra/cutover.sh` on PiSensors**
-- [ ] Old PHP site disabled (stop serving `/var/www/html`)
-- [ ] Archive `/var/www/html` → `/var/www/html.archived`
-- [ ] Delete `bak*` folders in archived directory
-- [ ] Update README with production URLs
+- [x] Full smoke test on http://192.168.1.26/
+- [x] Old PHP site disabled (stop serving `/var/www/html`)
+- [x] Archive `/var/www/html` → `/var/www/html.archived`
+- [x] Delete `bak*` folders in archived directory
+- [x] Update README with production URLs
 
 ### Phase 5 — Cleanup
 
@@ -266,5 +266,5 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 | 2026-07-19 | Phase 1: ported collectors, systemd units, `.env` on Pi; deploy pending sudo on PiSensors |
 | 2026-07-19 | Phase 1 complete: systemd collectors live, cron disabled; Attic/Outside sensors offline |
 | 2026-07-19 | Phase 2: FastAPI v1 endpoints on :8090; PHP parity verified via compare script |
-| 2026-07-19 | Phase 3: SvelteKit dashboard in `web/`, builds to `web/dist/` |
+| 2026-07-19 | Phase 4 complete: nginx port 80 live, legacy PHP archived |
 | 2026-07-19 | Added `scripts/verify.sh`, pytest suite, and integration test markers |

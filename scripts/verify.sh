@@ -13,6 +13,7 @@
 set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
+WEB_BASE="${WEB_BASE:-http://127.0.0.1}"
 API_BASE="${API_BASE:-http://127.0.0.1:8090}"
 PHP_BASE="${PHP_BASE:-http://127.0.0.1}"
 RUN_PHP_PARITY=1
