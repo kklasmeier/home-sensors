@@ -3,10 +3,23 @@
 set -euo pipefail
 
 REPO="/home/pi/home-sensors"
+DIST="$REPO/web/dist"
 
-echo "=== Production frontend build (same-origin /api) ==="
-cd "$REPO/web"
-VITE_API_BASE= npm run build
+build_frontend() {
+	if command -v npm >/dev/null 2>&1; then
+		echo "=== Production frontend build (same-origin /api) ==="
+		cd "$REPO/web"
+		VITE_API_BASE= npm run build
+	elif [[ -f "$DIST/index.html" ]]; then
+		echo "=== Frontend build skipped (no npm on Pi; using existing web/dist from NFS) ==="
+	else
+		echo "ERROR: npm not found and $DIST/index.html is missing." >&2
+		echo "Build on pi5Desktop: cd ~/Programming/home-sensors/web && VITE_API_BASE= npm run build" >&2
+		exit 1
+	fi
+}
+
+build_frontend
 
 echo ""
 echo "=== Install nginx site (port 80) ==="
