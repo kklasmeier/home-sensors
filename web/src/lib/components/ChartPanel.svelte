@@ -113,9 +113,4 @@
 		margin-bottom: 1.5rem;
 	}
 
-	.empty {
-		color: #888;
-		text-align: center;
-		padding: 2rem;
-	}
 </style>

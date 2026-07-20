@@ -21,45 +21,51 @@ Open the dashboard URL in your browser and leave the tab open; it refreshes itse
 
 ---
 
-## Page overview
+## How the site is organized
 
-The dashboard is a single scrolling page with these sections, top to bottom:
+The dashboard uses **multiple pages** so you are not scrolling through every chart at once.
+
+| Page | URL | What's there |
+|------|-----|----------------|
+| **Home** | http://192.168.1.26/ | Status tiles, garage doors, current readings, links to detail pages |
+| **Location** | `/locations/Attic`, `/locations/Garage`, etc. | One room: current values, 24h charts, high/low summary |
+| **Garage doors** | `/systems/garage-doors` | Door images, status, 24h history chart |
+| **Sump pump** | `/systems/sump-pump` | Water level chart and daily cycle counts |
+| **HVAC cycles** | `/systems/hvac` | Daily HVAC cycle chart (env readings on `/locations/HVAC`) |
+| **Collector logs** | `/logs` | Last 2000 lines from `collect_data.log` |
+
+From **Home**, use the **Locations** and **Systems** cards to open a detail page. Use the **header link**, **← Back to overview**, **Logs** in the header, or **Home** in the breadcrumbs to navigate.
+
+```text
+HOME (/)
+├── Status tiles + garage doors + current readings table
+├── Location cards → /locations/Attic, /locations/Inside, …
+└── System cards   → /systems/garage-doors, /systems/sump-pump, /systems/hvac
+
+/locations/Inside
+├── Current readings for Inside
+├── Temperature, heat index, humidity, pressure charts (24h)
+└── High / low summary table for Inside only
+
+/systems/sump-pump
+├── Water level chart (24h)
+└── Cycles per day (bar chart)
+```
+
+Every page has **Show Logs**, **Refresh now**, and the same **60-second** auto-refresh.
+
+---
+
+## Home page
+
+The home page is your **whole-house snapshot**:
 
 1. **Toolbar** — logs, last update time, manual refresh
 2. **Sensor status tiles** — quick health check for each data source
 3. **Garage doors** — open/closed state and how long each door has been in that state
 4. **Current readings** — latest temperature, heat index, humidity, and pressure per room
-5. **Charts** — trends over the last 24 hours (or daily cycle counts where noted)
-6. **Summary tables** — high and low values by hour, day, week, month, and year
-
-```text
-┌─────────────────────────────────────────────────────────┐
-│  Home Sensor Dashboard          [Show Logs] [Refresh]   │
-├─────────────────────────────────────────────────────────┤
-│  [Attic] [Garage] [Inside] [Outside] [Garagedoor] ...   │  ← status tiles
-├─────────────────────────────────────────────────────────┤
-│  Main Garage Door          3rd Car Door                 │  ← garage panel
-├─────────────────────────────────────────────────────────┤
-│  Current Readings (table)                               │
-├─────────────────────────────────────────────────────────┤
-│  Temperature / Heat Index / Humidity / Pressure charts  │
-│  Sump pump / HVAC / Garage door history charts          │
-├─────────────────────────────────────────────────────────┤
-│  Summary tables (per location)                          │
-└─────────────────────────────────────────────────────────┘
-```
-
----
-
-## Toolbar
-
-| Control | What it does |
-|---------|----------------|
-| **Show Logs** | Opens a popup with recent collector activity (useful when something looks wrong). Click **Close** or outside the popup to dismiss it. |
-| **Refresh now** | Reloads all data immediately instead of waiting for the next automatic refresh. |
-| **Updated … · auto-refresh every 60s** | Shows when data was last loaded. The page polls for new data every **60 seconds** while the tab is open. |
-
-If the server is unreachable, a red error banner appears at the top. Try **Refresh now** or check that you are on the home network.
+5. **Location cards** — open a room for charts and summaries
+6. **System cards** — open garage-door history, sump pump, or HVAC cycles
 
 ---
 
@@ -103,7 +109,7 @@ Two panels show the **Main Garage Door** and **3rd Car Door**:
 | Status line | `UP` or `DOWN` |
 | Duration | How long the door has been in the current state (e.g. `0 hours, 57 minutes`) |
 
-The **Garage Door History** chart at the bottom plots both doors over time for the last 24 hours.
+The **Garage Door History** chart is on **Systems → Garage Doors** (`/systems/garage-doors`).
 
 ---
 
@@ -124,20 +130,38 @@ A dash (**—**) means no reading is available for that location (often because 
 
 ---
 
-## Charts
+## Location pages
 
-All line charts use the **last 24 hours** of data, with one colored line per location where applicable.
+Open a location from the home page (e.g. **Inside**) to see:
 
-| Chart | What it shows |
-|-------|----------------|
-| **Temperature over time** | °F by location (Attic, Garage, Inside, Outside, HVAC) |
-| **Heat Index over time** | Heat index by location |
-| **Humidity over time** | Relative humidity by location |
-| **Pressure over time** | Barometric pressure by location |
-| **Sump Pump Water Level** | Water level at the sump pump |
-| **Number of Sump Pump Cycles per Day** | Bar chart — how many times the pump ran each day |
-| **Number of HVAC Cycles per Day** | Bar chart — HVAC cycle counts by day |
-| **Garage Door History** | Main and 3rd-car door state over 24 hours |
+- **Current** — temperature, heat index, humidity, pressure, and status for that room only
+- **Last 24 hours** — four line charts (temperature, heat index, humidity, pressure)
+- **High / low summary** — one table for that location across HOUR, DAY, WEEK, MONTH, YEAR
+
+Locations: **Attic**, **Garage**, **Inside**, **Outside**, **HVAC**.
+
+---
+
+## System pages
+
+| Page | Charts and data |
+|------|-----------------|
+| **Garage Doors** | Door panels plus 24h open/closed history for Main and 3rd-car doors |
+| **Sump Pump** | Water level (24h line chart) and cycles per day (bar chart) |
+| **HVAC Cycles** | HVAC cycles per day (bar chart). For temp/humidity at the HVAC sensor, use **Locations → HVAC**. |
+
+---
+
+## Charts (all pages)
+
+Line charts on location and system pages use the **last 24 hours** of data unless noted as daily cycle counts.
+
+| Where | Charts |
+|-------|--------|
+| Each **location** page | Temperature, heat index, humidity, pressure (that location only) |
+| **Garage Doors** | Door state history (both doors) |
+| **Sump Pump** | Water level; daily cycle bar chart |
+| **HVAC Cycles** | Daily cycle bar chart |
 
 Hover over a chart to see exact values and timestamps. On a phone, scroll horizontally if a table or chart is wider than the screen.
 
@@ -145,7 +169,7 @@ Hover over a chart to see exact values and timestamps. On a phone, scroll horizo
 
 ## Summary tables
 
-Below the charts, one table per location (**Garage**, **Inside**, **Outside**, **Attic**, **HVAC**) lists **high / low** values for:
+On each **location** page, one table lists **high / low** values for:
 
 - Temperature  
 - Heat Index  
@@ -162,6 +186,22 @@ Columns are time ranges: **HOUR**, **DAY**, **WEEK**, **MONTH**, **YEAR**.
 Example: `72.5 / 68.1` under **DAY** for Temperature means the daily high was 72.5 °F and the low was 68.1 °F.
 
 **N/A** means there was not enough data for that interval.
+
+---
+
+## Toolbar (every page)
+
+The **site header** at the top always shows **Home Sensor Dashboard** (links home) and **Logs** (links to `/logs`). On detail pages, **← Back to overview** appears on the right.
+
+**Breadcrumbs** under the header show where you are, e.g. `Home / Inside` or `Home / Collector Logs`. Click **Home** in the trail to go back.
+
+| Control | What it does |
+|---------|----------------|
+| **Logs** (header) | Opens the collector log page — last 2000 lines, auto-refreshes every 60s |
+| **Refresh now** | Reloads page data immediately instead of waiting for the next automatic refresh |
+| **Updated … · auto-refresh every 60s** | Shows when data was last loaded. Pages poll every **60 seconds** while the tab is open. |
+
+If the server is unreachable, a red error banner appears at the top. Try **Refresh now** or check that you are on the home network.
 
 ---
 
@@ -191,7 +231,7 @@ Historical data is kept long term, so charts and summary tables can show trends 
 | One tile stays **red** | That sensor or its network path may be down. Other tiles can still be green. |
 | Values look old | Click **Refresh now**. Check the tile color for that location. |
 | Garage image wrong | Door sensor may be offline; check the **Garagedoor** tile. |
-| Need more detail | Click **Show Logs** and look for errors mentioning the location name. Share a screenshot with whoever maintains PiSensors. |
+| Need more detail | Open **Logs** in the header and look for errors mentioning the location name. Share a screenshot with whoever maintains PiSensors. |
 
 This dashboard is for **monitoring only**. It does not control garage doors, HVAC, or the sump pump.
 

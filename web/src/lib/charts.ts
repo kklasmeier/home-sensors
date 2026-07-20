@@ -69,3 +69,49 @@ export function buildBarChart(
 		]
 	};
 }
+
+function fieldValue(row: ChartRow, field: keyof ChartRow): number | null {
+	const value = row[field];
+	if (value === undefined || value === null) return null;
+	return parseFloat(String(value));
+}
+
+/** Single-location line charts from one location's chart API response. */
+export function buildLocationChartSet(rows: ChartRow[], location: string, color: string) {
+	const series = (field: keyof ChartRow, label: string) =>
+		buildSingleSeriesChart(
+			rows
+				.map((row) => {
+					const value = fieldValue(row, field);
+					return value === null ? null : { reading_dttm: row.reading_dttm, value };
+				})
+				.filter((row): row is { reading_dttm: string; value: number } => row !== null),
+			label,
+			color
+		);
+
+	return {
+		temperature: series('temperature_f', 'Temperature'),
+		heatIndex: series('heat_index_f', 'Heat Index'),
+		humidity: series('humidity_pct', 'Humidity'),
+		pressure: series('pressure_inHg', 'Pressure')
+	};
+}
+
+export function buildGarageDoorChart(rows: import('./types').GarageChartRow[]) {
+	return {
+		labels: rows.map((r) => formatChartLabel(r.reading_dttm)),
+		datasets: [
+			{
+				label: 'Main Garage Door',
+				borderColor: '#4fc3f7',
+				data: rows.map((r) => r.mainGarageDoor)
+			},
+			{
+				label: '3rd Car Door',
+				borderColor: '#ffb74d',
+				data: rows.map((r) => r.thirdCarDoor)
+			}
+		]
+	};
+}
