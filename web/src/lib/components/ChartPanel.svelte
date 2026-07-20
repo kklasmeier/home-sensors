@@ -18,33 +18,42 @@
 		height?: number;
 	} = $props();
 
-	let canvas = $state<HTMLCanvasElement | null>(null);
-	let chart: Chart | null = null;
+	type ChartParams = {
+		title: string;
+		labels: string[];
+		datasets: ChartDataset[];
+		type: 'line' | 'bar';
+	};
 
-	function render() {
-		if (!canvas) return;
-		chart?.destroy();
-
-		const config: ChartConfiguration = {
-			type,
+	function makeConfig(params: ChartParams): ChartConfiguration {
+		return {
+			type: params.type,
 			data: {
-				labels,
-				datasets: datasets.map((d) => ({
+				labels: params.labels,
+				datasets: params.datasets.map((d) => ({
 					label: d.label,
 					data: d.data,
 					borderColor: d.borderColor,
-					backgroundColor: type === 'bar' ? `${d.borderColor}99` : 'transparent',
+					backgroundColor: params.type === 'bar' ? `${d.borderColor}99` : 'transparent',
 					tension: 0.1,
 					spanGaps: true,
-					stepped: type === 'line' && d.label.includes('Door') ? ('before' as const) : false
+					...(params.type === 'line' && d.label.includes('Door')
+						? { stepped: 'before' as const }
+						: {})
 				}))
 			},
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
+				animation: false,
 				plugins: {
 					legend: { labels: { color: '#e0e0e0' } },
-					title: { display: true, text: title, color: '#ffffff', font: { size: 16 } }
+					title: {
+						display: true,
+						text: params.title,
+						color: '#ffffff',
+						font: { size: 16 }
+					}
 				},
 				scales: {
 					x: {
@@ -54,30 +63,36 @@
 					y: {
 						ticks: { color: '#9e9e9e' },
 						grid: { color: '#333' },
-						beginAtZero: type === 'bar'
+						beginAtZero: params.type === 'bar'
 					}
 				}
 			}
 		};
-
-		chart = new Chart(canvas, config);
 	}
 
-	$effect(() => {
-		labels;
-		datasets;
-		title;
-		type;
-		render();
-		return () => {
-			chart?.destroy();
-			chart = null;
+	function chartAction(canvas: HTMLCanvasElement, params: ChartParams) {
+		let chart = new Chart(canvas, makeConfig(params));
+		return {
+			update(newParams: ChartParams) {
+				chart.destroy();
+				chart = new Chart(canvas, makeConfig(newParams));
+			},
+			destroy() {
+				chart.destroy();
+			}
 		};
-	});
+	}
+
+	const chartParams = $derived({ title, labels, datasets, type });
+	const hasData = $derived(datasets.some((d) => d.data.some((v) => v !== null)));
 </script>
 
 <div class="chart-panel" style="height: {height}px">
-	<canvas bind:this={canvas}></canvas>
+	{#if hasData}
+		<canvas use:chartAction={chartParams}></canvas>
+	{:else}
+		<p class="empty">No data for this period</p>
+	{/if}
 </div>
 
 <style>
@@ -85,5 +100,11 @@
 		position: relative;
 		width: 100%;
 		margin-bottom: 1.5rem;
+	}
+
+	.empty {
+		color: #888;
+		text-align: center;
+		padding: 2rem;
 	}
 </style>
