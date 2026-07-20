@@ -154,27 +154,29 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 - [x] Decisions documented (this file)
 - [x] Git repo initialized in `/home/pi/home-sensors`
 - [x] Connected to GitHub remote
-- [ ] GitHub Ruleset on `main` (PR required, block force push, restrict deletions) — configure in GitHub UI (`gh` not on pi5Desktop)
+- [x] GitHub Ruleset on `main` (PR required, block force push, restrict deletions) — configured in GitHub UI
 - [x] Folder structure created (`collectors/`, `api/`, `web/`, `infra/`, `docs/`)
 - [x] `.gitignore` and `.env.example`
 - [x] `README.md`
 
 ### Phase 1 — Collectors
 
-- [ ] Copy collectors from `/home/pi/HomeData/PythonScripts/` → `collectors/`
-- [ ] Extract DB creds to `.env` (same password, not hardcoded)
-- [ ] Create systemd unit per collector:
-  - [ ] `collect_data.py` — Garage (`.23`)
-  - [ ] `collect_data.py` — Attic (`.30`)
-  - [ ] `collect_data.py` — Inside (`.31`)
-  - [ ] `collect_data.py` — Outside (`.36`)
-  - [ ] `collect_data.py` — HVAC (`.25`)
-  - [ ] `collect_data_garagedoor.py` (`.35`)
-  - [ ] `get_sensor_data_sump_pump.py` (`.37`)
-- [ ] Enable systemd units (parallel to existing cron)
-- [ ] Verify data still flowing to MariaDB
-- [ ] Disable cron `@reboot` collector entries
-- [ ] Confirm systemd-only collectors running
+- [x] Copy collectors from `/home/pi/HomeData/PythonScripts/` → `collectors/`
+- [x] Extract DB creds to `.env` (same password, not hardcoded)
+- [x] Create systemd unit per collector:
+  - [x] `collect_data.py` — Garage (`.23`)
+  - [x] `collect_data.py` — Attic (`.30`)
+  - [x] `collect_data.py` — Inside (`.31`)
+  - [x] `collect_data.py` — Outside (`.36`)
+  - [x] `collect_data.py` — HVAC (`.25`)
+  - [x] `collect_data_garagedoor.py` (`.35`)
+  - [x] `get_sensor_data_sump_pump.py` (`.37`)
+- [x] Enable systemd units (parallel to existing cron)
+- [x] Verify data still flowing to MariaDB
+- [x] Disable cron `@reboot` collector entries
+- [x] Confirm systemd-only collectors running
+
+> **Note (2026-07-19):** Attic (`.30`) and Outside (`.36`) sensors offline — collectors stay active and log retries/errors; no DB writes until hardware is back.
 
 ### Phase 2 — API (FastAPI)
 
@@ -258,3 +260,5 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 | 2026-07-19 | Created `build.md`; ready for Phase 0 git scaffold |
 | 2026-07-19 | Added `docs/CONTEXT.md` for new Cursor session handoff |
 | 2026-07-19 | Phase 0: git init, scaffold, `.gitignore`, `.env.example`, `README`, push to GitHub |
+| 2026-07-19 | Phase 1: ported collectors, systemd units, `.env` on Pi; deploy pending sudo on PiSensors |
+| 2026-07-19 | Phase 1 complete: systemd collectors live, cron disabled; Attic/Outside sensors offline |
