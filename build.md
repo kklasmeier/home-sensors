@@ -14,6 +14,7 @@ Modernize the Home Sensor Dashboard on **PiSensors** (`192.168.1.26`).
 | **Production URL** | http://192.168.1.26/ |
 | **API test URL** | http://192.168.1.26:8090/ |
 | **API docs** | http://192.168.1.26:8090/docs |
+| **User guide** | [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) |
 
 ---
 

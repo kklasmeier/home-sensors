@@ -12,6 +12,15 @@ Modern replacement for the Home Sensor Dashboard on **PiSensors** (`192.168.1.26
 **Production:** http://192.168.1.26/  
 **API docs:** http://192.168.1.26/docs (direct: http://192.168.1.26:8090/docs)
 
+### Documentation
+
+| Guide | Audience |
+|-------|----------|
+| **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** | End users — how to read the dashboard |
+| [build.md](build.md) | Build phases and checklists |
+| [docs/CONTEXT.md](docs/CONTEXT.md) | Architecture and handoff for developers |
+| [docs/TESTING.md](docs/TESTING.md) | Tests and smoke verification |
+
 ### Cutover (Phase 4)
 
 On PiSensors:
