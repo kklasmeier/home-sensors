@@ -1,0 +1,43 @@
+# PiSensors port 80 — Home Sensor Dashboard (SvelteKit + FastAPI)
+# Install: bash /home/pi/home-sensors/infra/cutover.sh
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name _;
+
+	root /home/pi/home-sensors/web/dist;
+	index index.html;
+
+	# FastAPI (home-sensors-api on 127.0.0.1:8090)
+	location /api/ {
+		proxy_pass http://127.0.0.1:8090;
+		proxy_http_version 1.1;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+	}
+
+	location /docs {
+		proxy_pass http://127.0.0.1:8090/docs;
+		proxy_http_version 1.1;
+		proxy_set_header Host $host;
+	}
+
+	location /redoc {
+		proxy_pass http://127.0.0.1:8090/redoc;
+		proxy_http_version 1.1;
+		proxy_set_header Host $host;
+	}
+
+	location /openapi.json {
+		proxy_pass http://127.0.0.1:8090/openapi.json;
+	}
+
+	# SvelteKit SPA
+	location / {
+		try_files $uri $uri/ /index.html;
+	}
+}

@@ -9,8 +9,17 @@ Modern replacement for the Home Sensor Dashboard on **PiSensors** (`192.168.1.26
 | UI | SvelteKit |
 | Proxy | nginx (port 80) |
 
-**Production:** http://192.168.1.26/ (legacy until cutover)  
-**API (build):** http://192.168.1.26:8090/docs
+**Production:** http://192.168.1.26/  
+**API docs:** http://192.168.1.26/docs (direct: http://192.168.1.26:8090/docs)
+
+### Cutover (Phase 4)
+
+On PiSensors:
+
+```bash
+bash /home/pi/home-sensors/infra/cutover.sh
+./scripts/verify.sh --smoke
+```
 
 ## Repo layout
 

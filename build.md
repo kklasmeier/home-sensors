@@ -204,9 +204,9 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 
 ### Phase 4 — Cutover
 
-- [ ] nginx config: port 80 serves `web/dist/` + proxies `/api/` to FastAPI
-- [ ] FastAPI moved from `:8090` to unix socket or `:8090` behind nginx
-- [ ] Full smoke test on http://192.168.1.26/
+- [x] nginx config: port 80 serves `web/dist/` + proxies `/api/` to FastAPI
+- [x] FastAPI stays on `127.0.0.1:8090` behind nginx (`/api/`, `/docs`)
+- [ ] Full smoke test on http://192.168.1.26/ — **run `infra/cutover.sh` on PiSensors**
 - [ ] Old PHP site disabled (stop serving `/var/www/html`)
 - [ ] Archive `/var/www/html` → `/var/www/html.archived`
 - [ ] Delete `bak*` folders in archived directory
