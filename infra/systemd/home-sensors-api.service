@@ -1,0 +1,17 @@
+[Unit]
+Description=Home Sensors API (FastAPI)
+After=network-online.target mariadb.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/home-sensors
+EnvironmentFile=/home/pi/home-sensors/.env
+ExecStart=/home/pi/home-sensors/api/venv/bin/uvicorn api.main:app --host 0.0.0.0 --port 8090
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
