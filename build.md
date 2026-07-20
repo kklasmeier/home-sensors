@@ -191,16 +191,16 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 
 ### Phase 3 — Frontend (SvelteKit)
 
-- [ ] Scaffold SvelteKit app in `web/`
-- [ ] Sensor status grid (color-coded, last-seen)
-- [ ] Garage door panel (open/closed, duration)
-- [ ] Charts: temperature, heat index, humidity, pressure
-- [ ] Charts: sump pump, HVAC cycles, garage door
-- [ ] Per-location summary tables (high/low by interval)
-- [ ] Log viewer (collect_data.log)
-- [ ] Responsive / mobile-friendly layout
-- [ ] Dark mode
-- [ ] `npm run build` → `web/dist/`
+- [x] Scaffold SvelteKit app in `web/`
+- [x] Sensor status grid (color-coded, last-seen)
+- [x] Garage door panel (open/closed, duration)
+- [x] Charts: temperature, heat index, humidity, pressure
+- [x] Charts: sump pump, HVAC cycles, garage door
+- [x] Per-location summary tables (high/low by interval)
+- [x] Log viewer (collect_data.log)
+- [x] Responsive / mobile-friendly layout
+- [x] Dark mode
+- [x] `npm run build` → `web/dist/`
 
 ### Phase 4 — Cutover
 
@@ -266,5 +266,5 @@ Public repo = anyone can **read** code. To prevent unauthorized **writes**:
 | 2026-07-19 | Phase 1: ported collectors, systemd units, `.env` on Pi; deploy pending sudo on PiSensors |
 | 2026-07-19 | Phase 1 complete: systemd collectors live, cron disabled; Attic/Outside sensors offline |
 | 2026-07-19 | Phase 2: FastAPI v1 endpoints on :8090; PHP parity verified via compare script |
-| 2026-07-19 | Phase 2 complete: `home-sensors-api` systemd service active on :8090 |
+| 2026-07-19 | Phase 3: SvelteKit dashboard in `web/`, builds to `web/dist/` |
 | 2026-07-19 | Added `scripts/verify.sh`, pytest suite, and integration test markers |

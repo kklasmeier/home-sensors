@@ -15,7 +15,9 @@ __pycache__/
 node_modules/
 web/.svelte-kit/
 web/build/
+# SvelteKit production build
 web/dist/
+web/build/
 
 # Logs and runtime artifacts
 *.log
